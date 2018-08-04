@@ -84,8 +84,6 @@ RUN sed -i '/long long not found/c\$as_echo "#define HAVE_LONG_LONG 1" >>confdef
 # emconfigure gdal
 RUN bash -c "source /emsdk/emsdk_env.sh && cd /gdal-2.3.1/gdal && emconfigure ./configure"
 
-RUN ls /gdal-2.3.1/gdal
-
 # compile proj4 into LLVM
 RUN bash -c "source /emsdk/emsdk_env.sh && cd proj.4-$PROJ_VERSION && ./autogen.sh && emconfigure ./configure --enable-shared=no --enable-static --without-mutex && emmake make -j4"
 
@@ -103,8 +101,7 @@ RUN ls /openjpeg-2.3.0/bin/libopenjp2.a
 RUN bash -c "source /emsdk/emsdk_env.sh && cd /gdal-2.3.1/gdal && emmake make -j4 lib-target"
 
 # check if above succeeded
-RUN ls /gdal-2.3.1/gdal
-RUN ls /gdal-2.3.1/gdal/libgdal.a
+RUN ls /gdal-2.3.1/gdal/.libs/libgdal.a
 
 
 ##############
@@ -113,7 +110,7 @@ RUN ls /gdal-2.3.1/gdal/libgdal.a
 
 # compile into JavaScript
 RUN bash -c "source /emsdk/emsdk_env.sh && \
-    emcc /gdal-2.3.1/libgdal.a /proj.4-4.9.3/src/.libs/libproj.a /openjpeg-version.2.0/build/bin/libopenjp2.a \
+    emcc /gdal-2.3.1/gdal/.libs/libgdal.a /proj.4-$PROJ_VERSION/src/.libs/libproj.a /openjpeg-2.3.0/bin/libopenjp2.a \
     -g \
     -o gdal.js \
     --memory-init-file 0 \
