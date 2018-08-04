@@ -10,6 +10,7 @@ ENV GDAL_VERSION=v2.3.1
 ENV USE_OPENJPEG=1
 ENV ASM_JS=1
 ENV LLVM_ROOT='/myfastcomp/emscripten-fastcomp/build/bin'
+ENV GDAL_CONFIG_OPTIONS='--enable-static --enable-pdf-plugin=no --with-dods-root=no --with-freexl=no --with-geotiff=internal --with-libjson-c=internal --with-libtiff=internal --with-libz=internal --with-jpeg=internal --with-static-proj4=proj.4-5.1.0 --with-openjpeg                                                        --without-armadillo --without-bsb --without-cfitsio --without-cryptopp --without-curl --without-dds --without-dwgdirect --without-ecw --without-epsilon --without-expat --without-fgdb --without-fme --without-geos --without-gif --without-grass --without-grib --without-gta --without-hdf4 --without-hdf5 --without-idb --without-ingres --without-jasper --without-java --without-jp2mrsid --without-jpeg12 --without-kakadu --without-kea --without-libkml --without-ld-shared --without-libgrass --without-libiconv-prefix --without-liblzma --without-libtool --without-mdb --without-mongocxx --without-mrf --without-mrsid --without-mrsid_lidar --without-msg --without-mysql --without-netcdf --without-oci --without-oci-include --without-oci-lib --without-odbc --without-ogdi --without-pam --without-pcraster --without-pcre --without-pdfium --without-perl --without-pg --without-php --without-podofo --without-poppler --without-python --without-qhull --without-rasdaman --without-sde --without-sosi --without-spatialite --without-sqlite3 --without-threads --without-webp --without-xerces --without-xml2'
 
 ############
 # DOWNLOAD #
@@ -82,7 +83,7 @@ RUN bash -c "source /emsdk/emsdk_env.sh && cd openjpeg-2.3.0 && cmake . && make 
 RUN sed -i '/long long not found/c\$as_echo "#define HAVE_LONG_LONG 1" >>confdefs.h' /gdal-2.3.1/gdal/configure 
 
 # emconfigure gdal
-RUN bash -c "source /emsdk/emsdk_env.sh && cd /gdal-2.3.1/gdal && emconfigure ./configure"
+RUN bash -c "source /emsdk/emsdk_env.sh && cd /gdal-2.3.1/gdal && emconfigure ./configure $GDAL_CONFIG_OPTIONS"
 
 # compile proj4 into LLVM
 RUN bash -c "source /emsdk/emsdk_env.sh && cd proj.4-$PROJ_VERSION && ./autogen.sh && emconfigure ./configure --enable-shared=no --enable-static --without-mutex && emmake make -j4"
