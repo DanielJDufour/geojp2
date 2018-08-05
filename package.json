@@ -4,7 +4,8 @@
   "description": "Decode JPEG2000 Satellite Imagery",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "extract-module": "rm gdal.js && docker cp $(docker ps --latest --quiet):/gdal.js ."
   },
   "repository": {
     "type": "git",
